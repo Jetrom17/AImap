@@ -10,7 +10,6 @@ import (
 	"runtime"
 
 	"github.com/mattn/go-isatty"
-	"golang.org/x/sys/windows"
 )
 
 // Variáveis de cores ANSI
@@ -32,10 +31,7 @@ func init() {
 
 func supportsColor() bool {
 	if runtime.GOOS == "windows" {
-		handle := windows.Handle(os.Stdout.Fd())
-		var mode uint32
-		windows.GetConsoleMode(handle, &mode)
-		windows.SetConsoleMode(handle, mode|windows.ENABLE_VIRTUAL_TERMINAL_PROCESSING)
+		return false // Em Windows, requer ativação manual de cores ANSI
 	}
 	return isatty.IsTerminal(os.Stdout.Fd())
 }
@@ -90,7 +86,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	apiKey := "SUA_CHAVE_API_AQUI" // https://aistudio.google.com/apikey
+	apiKey := "AIzaSyDFdXr2xKlP1WugFbBGi6VdsGKfjHlxDR4"
 	apiURL := "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey
 
 	fmt.Println(YELLOW + "Consultando a IA..." + NC)
